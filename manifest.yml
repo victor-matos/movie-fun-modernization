@@ -1,0 +1,9 @@
+applications:
+  - name: movei-fun-app
+    path: build/libs/moviefun-1.1.0-SNAPSHOT.war
+    random-route: true
+    env:
+      APPLICATION_OAUTH_ENABLED: false
+      EUREKA_CLIENT_ENABLED: false
+      RIBBON_EUREKA_ENABLED: false
+      MOVIES_PAGESIZE: 6

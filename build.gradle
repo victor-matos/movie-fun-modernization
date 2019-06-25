@@ -1,0 +1,71 @@
+buildscript {
+    ext {
+        springBootVersion = "2.0.6.RELEASE"
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+apply plugin: "java"
+apply plugin: "war"
+apply plugin: "org.springframework.boot"
+apply plugin: "io.spring.dependency-management"
+
+group = "org.superbiz"
+version = "1.1.0-SNAPSHOT"
+
+description = "OpenEJB :: Web Examples :: Moviefun"
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+test {
+    testLogging {
+        exceptionFormat = 'full'
+    }
+}
+
+bootRun.environment([
+    "MINIO_ACCESS_KEY": "7R77XNK8S3QF1PQG29PJ",
+    "MINIO_SECRET_ACCESS_KEY": "Kt001Cq2h+bXnmAI6HuAdR7RRF0LJQbTLPpkl5j+",
+    "S3_ENDPOINTURL": "http://127.0.0.1:9000",
+    "VCAP_SERVICES": '{"user-provided": [{"credentials": {"access_key_id": "${MINIO_ACCESS_KEY:?missing}", "bucket": "moviefun", "secret_access_key": "${MINIO_SECRET_ACCESS_KEY:?missing}", "endpoint": "http://127.0.0.1:9000"}, "name": "photo-storage"}]}',
+    "APPLICATION_OAUTH_ENABLED": "false",
+
+    "EUREKA_CLIENT_ENABLED": "false",
+    "RIBBON_EUREKA_ENABLED": "false",
+
+    "ALBUM_SERVICE_RIBBON_LISTOFSERVERS": "http://localhost:8081",
+    "MOVIE_SERVICE_RIBBON_LISTOFSERVERS": "http://localhost:8082",
+    "MOVIES_PAGESIZE": "6"
+])
+
+dependencies {
+    compile "taglibs:standard:1.1.2"
+    compile "org.springframework.boot:spring-boot-starter-web"
+    compile "org.springframework.boot:spring-boot-starter-tomcat"
+    compile "org.springframework.boot:spring-boot-starter-data-jpa"
+    compile "mysql:mysql-connector-java:5.1.40"
+    compile "com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.7.0"
+    compile "commons-lang:commons-lang:2.4"
+    compile "org.apache.tika:tika-core:1.14"
+    compile "com.amazonaws:aws-java-sdk:1.11.74"
+
+    compile "javax.servlet:jstl:1.2"
+    compile "org.apache.tomee:javaee-api:8.0"
+    compile "org.apache.tomcat.embed:tomcat-embed-jasper:8.5.6"
+    compile "org.apache.geronimo.specs:geronimo-osgi-locator:1.1"
+    compile "org.apache.geronimo.components:geronimo-jaspi:2.0.0"
+
+    testCompile "junit:junit:4.12"
+}
