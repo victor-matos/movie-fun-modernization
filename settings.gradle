@@ -1,1 +1,9 @@
-rootProject.name = 'moviefun'
+rootProject.name = 'movie-fun-modernization'
+include 'applications:movie-fun-app'
+include 'components:movies'
+//findProject(':components:movies')?.name = 'movies'
+include 'components:albums'
+//findProject(':components:albums')?.name = 'albums'
+include 'components:blobstore'
+//findProject(':components:blobstore')?.name = 'blobstore'
+
