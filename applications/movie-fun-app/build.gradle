@@ -23,3 +23,14 @@ dependencies {
 
     testCompile "junit:junit:$junitVersion"
 }
+
+bootRun.environment([
+        "MOVIES_URL" : "http://localhost:8082/movies",
+        "ALBUMS_URL" : "http://localhost:8081/albums",
+
+        "MINIO_ACCESS_KEY": "7R77XNK8S3QF1PQG29PJ",
+        "MINIO_SECRET_ACCESS_KEY": "Kt001Cq2h+bXnmAI6HuAdR7RRF0LJQbTLPpkl5j+",
+        "S3_ENDPOINTURL": "http://127.0.0.1:9000",
+        "VCAP_SERVICES": '{"user-provided": [{"credentials": {"access_key_id": "${MINIO_ACCESS_KEY:?missing}", "bucket": "moviefun", "secret_access_key": "${MINIO_SECRET_ACCESS_KEY:?missing}", "endpoint": "http://127.0.0.1:9000"}, "name": "photo-storage"}]}',
+
+])
