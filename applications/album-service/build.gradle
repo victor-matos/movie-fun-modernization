@@ -1,11 +1,17 @@
+group = "org.superbiz"
+version = "1.1.0-SNAPSHOT"
+description = "OpenEJB :: Web Examples :: AlbumService"
+
 apply from: "../../java.gradle"
 
 apply plugin: "org.springframework.boot"
 apply plugin: "io.spring.dependency-management"
 
-group = "org.superbiz"
-version = "1.1.0-SNAPSHOT"
-description = "OpenEJB :: Web Examples :: AlbumService"
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion"
+    }
+}
 
 dependencies {
     compile project(":components:albums")
@@ -15,4 +21,15 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-data-jpa"
 
     compile "mysql:mysql-connector-java:$mysqlVersion"
+
+    compile "org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:$springSecurityOAuthAutoconfigVersion"
+    compile "io.pivotal.spring.cloud:spring-cloud-sso-connector:$springCloudSsoVersion"
 }
+
+bootRun.environment([
+        "MINIO_ACCESS_KEY": "7R77XNK8S3QF1PQG29PJ",
+        "MINIO_SECRET_ACCESS_KEY": "Kt001Cq2h+bXnmAI6HuAdR7RRF0LJQbTLPpkl5j+",
+        "S3_ENDPOINTURL": "http://127.0.0.1:9000",
+        "VCAP_SERVICES": '{"user-provided": [{"credentials": {"access_key_id": "${MINIO_ACCESS_KEY:?missing}", "bucket": "moviefun", "secret_access_key": "${MINIO_SECRET_ACCESS_KEY:?missing}", "endpoint": "http://127.0.0.1:9000"}, "name": "photo-storage"}]}',
+        "APPLICATION_OAUTH_ENABLED" : "false"
+])

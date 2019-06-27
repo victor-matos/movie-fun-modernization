@@ -1,12 +1,18 @@
+group = "org.superbiz"
+version = "1.1.0-SNAPSHOT"
+description = "OpenEJB :: Web Examples :: Moviefun"
+
 apply from: "../../java.gradle"
 
 apply plugin: "org.springframework.boot"
 apply plugin: "io.spring.dependency-management"
 apply plugin: "war"
 
-group = "org.superbiz"
-version = "1.1.0-SNAPSHOT"
-description = "OpenEJB :: Web Examples :: Moviefun"
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion"
+    }
+}
 
 dependencies {
     compile project(":components:movie-fun-api")
@@ -21,5 +27,17 @@ dependencies {
 
     compile "org.apache.tomcat.embed:tomcat-embed-jasper:8.5.6"
 
+    compile "org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:$springSecurityOAuthAutoconfigVersion"
+    compile "io.pivotal.spring.cloud:spring-cloud-sso-connector:$springCloudSsoVersion"
+    compile "org.springframework.security:spring-security-taglibs"
+
     testCompile "junit:junit:$junitVersion"
 }
+
+bootRun.environment([
+        "MINIO_ACCESS_KEY": "7R77XNK8S3QF1PQG29PJ",
+        "MINIO_SECRET_ACCESS_KEY": "Kt001Cq2h+bXnmAI6HuAdR7RRF0LJQbTLPpkl5j+",
+        "S3_ENDPOINTURL": "http://127.0.0.1:9000",
+        "VCAP_SERVICES": '{"user-provided": [{"credentials": {"access_key_id": "${MINIO_ACCESS_KEY:?missing}", "bucket": "moviefun", "secret_access_key": "${MINIO_SECRET_ACCESS_KEY:?missing}", "endpoint": "http://127.0.0.1:9000"}, "name": "photo-storage"}]}',
+        "APPLICATION_OAUTH_ENABLED" : "false"
+])
